@@ -1,0 +1,110 @@
+{% extends "../layout.html" %}
+
+{% load static %}
+
+{% block title %}Registered Events{% endblock %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/myevents.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="myevents-top">
+    <div class="home-head-section2">
+        <input class="event-search" type="search" placeholder="search events.." />
+        <button type="submit" class="event-search-button"><i class="fas fa-search"></i></button>
+    </div>
+</div>
+
+<div class="event-listing">
+    <div class="list-event mb-2 mt-1">
+        <div class="list-event-box">
+            <div class="list-event-img"><img class="img-class" src="{% static '/images/im2.png' %}"
+                    alt="Example Image" /></div>
+            <div class="list-event-title">
+                <h4 class="font">Hackathon Event</h4>
+                <div>
+                    <a><i class="fas fa-edit"></i> Edit</a>
+                    <span class="p-3">Registered</span>
+
+                </div>
+            </div>
+            <div class="list-event-title mt-0">
+                <div class="event-section">
+                    <h6 class="font">Date</h6>
+                    <p>12/12/2024</p>
+                </div>
+                <div class="event-section">
+                    <h6 class="font">Location</h6>
+                    <p>Erode</p>
+                </div>
+                <div class="event-section">
+                    <h6 class="font">Tickets Available</h6>
+                    <p>123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list-event mb-2 mt-1">
+        <div class="list-event-box">
+            <div class="list-event-img"><img class="img-class" src="{% static '/images/im2.png' %}"
+                    alt="Example Image" /></div>
+            <div class="list-event-title">
+                <h4 class="font">Hackathon Event</h4>
+                <div>
+                    <a><i class="fas fa-edit"></i> Edit</a>
+                    <span class="p-3">Registered</span>
+                </div>
+            </div>
+            <div class="list-event-title mt-0">
+                <div class="event-section">
+                    <h6 class="font">Date</h6>
+                    <p>12/12/2024</p>
+                </div>
+                <div class="event-section">
+                    <h6 class="font">Location</h6>
+                    <p>Erode</p>
+                </div>
+                <div class="event-section">
+                    <h6 class="font">Tickets Available</h6>
+                    <p>123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="createEventModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="createEventModalLabel">Create Event</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form or content for creating an event -->
+                <form>
+                    <div class="form-group">
+                        <label for="event-name">Event Name</label>
+                        <input type="text" class="form-control" id="event-name" placeholder="Enter event name">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-date">Event Date</label>
+                        <input type="date" class="form-control" id="event-date">
+                    </div>
+                    <!-- Add more fields as needed -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save Event</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

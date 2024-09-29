@@ -1,0 +1,34 @@
+.register{
+    width: 90%;
+    display: flex;
+}
+.register-img{
+    width: 700px;
+    height: 400px;
+}
+.register-form{
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.form-title{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.register-input{
+    width: 350px;
+    text-indent: 10px;
+}
+.form{
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid #dfdfdf;
+    padding: 30px;
+}

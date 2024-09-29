@@ -1,0 +1,67 @@
+{% extends "../layout.html" %}
+
+{% load static %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="register">
+    <img class="register-img" src="{% static '/images/im.png' %}" />
+    <div>
+        <h4 class=" p-3">Hackathon game</h4>
+        <p class="p-3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse possimus pariatur ut reprehenderit
+            dicta! Eos facere enim reprehenderit quaerat architecto veritatis, aut ipsa hic non itaque porro quibusdam
+            deleniti amet! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id eligendi dolorem aspernatur qui
+            recusandae maxime assumenda alias velit provident est? Placeat eligendi sunt et ad provident, asperiores
+            quia accusantium similique!</p>
+        <div class="home-event-title mt-0 p-3">
+            <div class="home-event-section">
+                <h6 class="home-font">Date</h6>
+                <p>12/12/2024</p>
+            </div>
+            <div class="home-event-section">
+                <h6 class="home-font">Location</h6>
+                <p>Erode</p>
+            </div>
+            <div class="home-event-section">
+                <h6 class="home-font">Tickets Available</h6>
+                <p>123</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="register-form">
+    <div class="form-title">
+        <h5>Register Form</h5>
+    </div>
+    <div class="form">
+        <div class="mt-3">
+            <label>useranem</label>
+            <p>praveen004</p>
+        </div>
+        <div class="mt-3">
+            <label>Name</label>
+            <input class="register-input" placeholder="Enter Name" />
+        </div>
+        <div class="mt-3">
+            <label>Phone Number</label>
+            <input class="register-input" placeholder="Enter Name" />
+        </div>
+        <div class="mt-3">
+            <label>Other Details</label>
+            <input class="register-input" placeholder="Enter Name" />
+        </div>
+        <div class="mt-2">
+            <div>
+                <button class="button-event">Register</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

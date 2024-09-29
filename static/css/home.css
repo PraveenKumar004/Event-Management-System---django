@@ -1,0 +1,78 @@
+.home-list-events{
+    width: 95vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.home-event {
+    width: 710px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-event-box {
+    width: 700px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.button-event{
+    height: 40px;
+    border: none;
+    background-color: #DB3E59;
+    color: #fff;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.home-event-img {
+    width: 90%;
+    height: 350px;
+    margin: 10px;
+    background-color: aliceblue;
+}
+.home-event-title{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.home-event-base2{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background-color: #da5858;
+}
+.home-event-section{
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+}
+.home-font{
+    color: #413b3b;
+}
+.img-class{
+    width: 100%;
+    height: 100%;
+}
+.winner-event-img {
+    width: 90%;
+    height: 160px;
+    display: flex;
+    margin: 10px;
+    background-color: aliceblue;
+}
+.winner-profile-img{
+    width: 150px;
+    height: 150px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
