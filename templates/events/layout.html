@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    {% block extra_styles %}{% endblock %}
+    <title>Event Management</title>
+</head>
+
+<body>
+    
+    <div class="layout">
+        <!-- Sidebar -->
+        <div class="sidenav">
+            <ul class="sidenav-link">
+                <li class="{% if request.path == '/dashboard/' %}active{% endif %}"><a href="/dashboard/">Dashboard</a></li>
+                <li class="{% if request.path == '/registeredevents/' %}active{% endif %}"><a href="/registeredevents/">Registered Events</a></li>
+                <li class="{% if request.path == '/myevents/' %}active{% endif %}"><a href="/myevents/">My Events</a></li>
+                <li class="{% if request.path == '/comments/' %}active{% endif %}"><a href="/comments/">Comments</a></li>
+            </ul>
+        </div>
+
+        <!-- Top Navbar -->
+        <div class="topnav">
+            <h5>{% block title %}{% endblock %}</h5>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div>{% block content %}{% endblock %}</div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

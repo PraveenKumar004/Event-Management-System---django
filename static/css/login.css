@@ -1,0 +1,9 @@
+.login-outer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.signup-box{
+    width: 450px;
+    height: auto;
+}

@@ -1,0 +1,95 @@
+{% extends "../layout.html" %}
+
+{% load static %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="home-list-events">
+    <div class="home-event mb-3 mt-1">
+        <div class="home-event-box">
+            <div class="home-event-img"><img class="img-class" src="{% static '/images/im2.png' %}"
+                    alt="Example Image" /></div>
+            <div class="home-event-title">
+                <h4 class="font head-hover" onclick="window.location.href='/event/'" style="cursor: pointer;">Hackathon
+                    Event</h4>
+                <div>
+                    <button class="button-event" onclick="window.location.href='/event/register/'">Register</button>
+                </div>
+            </div>
+            <div class="home-event-title mt-0">
+                <div class="home-event-section">
+                    <h6 class="home-font">Date</h6>
+                    <p>12/12/2024</p>
+                </div>
+                <div class="home-event-section">
+                    <h6 class="home-font">Location</h6>
+                    <p>Erode</p>
+                </div>
+                <div class="home-event-section">
+                    <h6 class="home-font">Tickets Available</h6>
+                    <p>123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="home-event mb-3 mt-1">
+        <div class="home-event-box">
+            <div class="home-event-img"><img class="img-class" src="{% static '/images/im.png' %}"
+                    alt="Example Image" /></div>
+            <div class="home-event-title">
+                <h4 class="font head-hover" onclick="window.location.href='/event/'" style="cursor: pointer;">Hackathon
+                    Event</h4>
+                <div>
+                    <button class="button-event" onclick="window.location.href='/event/register/'">Register</button>
+                </div>
+            </div>
+            <div class="home-event-title mt-0">
+                <div class="home-event-section">
+                    <h6 class="home-font">Date</h6>
+                    <p>12/12/2024</p>
+                </div>
+                <div class="home-event-section">
+                    <h6 class="home-font">Location</h6>
+                    <p>Erode</p>
+                </div>
+                <div class="home-event-section">
+                    <h6 class="home-font">Tickets Available</h6>
+                    <p>123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="home-event mb-3 mt-1">
+        <div class="home-event-box">
+            <div class="home-event-img"><img class="img-class" src="{% static '/images/im.png' %}"
+                    alt="Example Image" /></div>
+            <div class="home-event-title">
+                <h4 class="font head-hover" onclick="window.location.href='/event/'" style="cursor: pointer;">Hackathon
+                    Event</h4>
+                <div>
+                    <button class="button-event" onclick="window.location.href='/event/register/'">Register</button>
+                </div>
+            </div>
+            <div class="home-event-title mt-0">
+                <div class="home-event-section">
+                    <h6 class="home-font">Date</h6>
+                    <p>12/12/2024</p>
+                </div>
+                <div class="home-event-section">
+                    <h6 class="home-font">Location</h6>
+                    <p>Erode</p>
+                </div>
+                <div class="home-event-section">
+                    <h6 class="home-font">Tickets Available</h6>
+                    <p>123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "../layout.html" %}
+
+{% load static %}
+
+{% block title %}My Events{% endblock %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/myevents.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="myevents-top">
+    <div><button type="button" class="button-event" onclick="window.location.href='/createevent/'">Create
+            Event</button></div>
+    <div class="home-head-section2">
+        <input class="event-search" type="search" placeholder="search events.." />
+        <button type="submit" class="event-search-button"><i class="fas fa-search"></i></button>
+    </div>
+</div>
+<div class="event-listing">
+    <div class="list-event">
+        <div class="list-event-box">
+            <div class="list-event-img"><img class="img-class" src="{% static '/images/im2.png' %}"
+                    alt="Example Image" /></div>
+            <div class="list-event-title">
+                <h4 class="font" onclick="window.location.href='/dashboard/events/'" style="cursor: pointer;">Hackathon Event</h4>
+                <div>
+                    <h6 onclick="window.location.href='/annoncewinner/events/'" style="cursor: pointer;">Annonce Winner</h6>
+                </div>
+            </div>
+            <div class="list-event-title mt-0">
+                <div class="event-section">
+                    <h6 class="font">Date</h6>
+                    <p>12/12/2024</p>
+                </div>
+                <div class="event-section">
+                    <h6 class="font">Location</h6>
+                    <p>Erode</p>
+                </div>
+                <div class="event-section">
+                    <h6 class="font">Tickets Available</h6>
+                    <p>123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list-event">
+        <div class="list-event-box">
+            <div class="list-event-img"><img class="img-class" src="{% static '/images/im.png' %}"
+                    alt="Example Image" /></div>
+            <div class="list-event-title">
+                <h4 class="font">Hackathon Event</h4>
+                <div>
+                    <a><i class="fas fa-edit"></i> </a>
+                    <a class="p-3 text-dark"><i class="fas fa-trash"></i> </a>
+                </div>
+            </div>
+            <div class="list-event-title mt-0">
+                <div class="event-section">
+                    <h6 class="font">Date</h6>
+                    <p>12/12/2024</p>
+                </div>
+                <div class="event-section">
+                    <h6 class="font">Location</h6>
+                    <p>Erode</p>
+                </div>
+                <div class="event-section">
+                    <h6 class="font">Tickets Available</h6>
+                    <p>123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list-event">
+        <div class="list-event-box">
+            <div class="list-event-img"><img class="img-class" src="{% static '/images/im4.jpg' %}"
+                    alt="Example Image" /></div>
+            <div class="list-event-title">
+                <h4 class="font">Hackathon Event</h4>
+                <div>
+                    <a><i class="fas fa-edit"></i></a>
+                    <a class="p-3 text-dark"><i class="fas fa-trash"></i></a>
+                </div>
+            </div>
+            <div class="list-event-title mt-0">
+                <div class="event-section">
+                    <h6 class="font">Date</h6>
+                    <p>12/12/2024</p>
+                </div>
+                <div class="event-section">
+                    <h6 class="font">Location</h6>
+                    <p>Erode</p>
+                </div>
+                <div class="event-section">
+                    <h6 class="font">Tickets Available</h6>
+                    <p>123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

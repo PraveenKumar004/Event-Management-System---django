@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/questions.css' %}" />
+    <title>Add Questions</title>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Add Questions</h2>
+        <form id="question-form">
+            <div class="outer-container ">
+                <p>Event Name</p>
+                <input class="event-input"/>
+            </div>
+            <div class="outer-container mt-4">
+                <div id="questions-container"></div>
+                <div class="button-add-question">
+                    <button id="add-question" type="button" class="btn-primary">Add Question</button>
+                </div>
+            </div>
+            <button type="button" class="btn-success" onclick="submitForm()">Submit Questions</button>
+        </form>
+    </div>
+
+    <script>
+        let questionCount = 0; // To track unique question IDs
+
+        document.getElementById('add-question').addEventListener('click', function () {
+            questionCount++; // Increment the question count for unique IDs
+            const questionBox = document.createElement('div');
+            questionBox.className = 'question-box';
+            questionBox.id = `question-${questionCount}`; // Unique ID for each question
+
+            questionBox.innerHTML = `
+                <select class="question-type" onchange="handleQuestionTypeChange(this)" required>
+                    <option value="">Select Question Type</option>
+                    <option value="text">Short Answer</option>
+                    <option value="dropdown">Dropdown</option>
+                    <option value="multiple-choice">Multiple Choice</option>
+                    <option value="checkbox">Checkbox</option>
+                    <option value="file-upload">File Upload</option>
+                </select>
+                <div class="question-inputs"></div>
+                <div class="question-flex">
+                <div class="required-checkbox">
+                    <input type="checkbox" id="required-${questionCount}">
+                    <label for="required-${questionCount}">Required</label>
+                </div>
+                <button type="button" class="btn-danger" onclick="deleteQuestion('${questionBox.id}')">Delete Question</button>
+                </div>
+            `;
+            document.getElementById('questions-container').appendChild(questionBox);
+        });
+
+        function handleQuestionTypeChange(select) {
+            const type = select.value;
+            const inputsContainer = select.nextElementSibling; // Get the next sibling div for inputs
+            inputsContainer.innerHTML = ''; // Clear previous inputs
+
+            if (type === 'text' || type === 'file-upload') {
+                inputsContainer.innerHTML = `<input type="text" name="questions" placeholder="Enter your question" required>`;
+            } else if (type === 'dropdown' || type === 'multiple-choice' || type === 'checkbox') {
+                inputsContainer.innerHTML = `
+                    <input type="text" name="questions" placeholder="Enter your question" required>
+                    <div id="options-container-${questionCount}">
+                        <div class="option-item">
+                            <input type="text" class="option-input" placeholder="Option 1" required>
+                            <button type="button" class="btn-danger" onclick="deleteOption(this)">Remove</button>
+                        </div>
+                        <div class="option-item">
+                            <input type="text" class="option-input" placeholder="Option 2" required>
+                            <button type="button" class="btn-danger" onclick="deleteOption(this)">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="addOption(${questionCount})">Add Option</button>
+                `;
+            }
+        }
+
+        function addOption(questionId) {
+            const optionsContainer = document.getElementById(`options-container-${questionId}`);
+            const newOption = document.createElement('div');
+            newOption.className = 'option-item';
+            newOption.innerHTML = `
+                <input type="text" class="option-input" placeholder="Option ${optionsContainer.children.length + 1}" required>
+                <button type="button" class="btn-danger" onclick="deleteOption(this)">Delete Option</button>
+            `;
+            optionsContainer.appendChild(newOption);
+        }
+
+        function deleteOption(button) {
+            const optionItem = button.parentElement;
+            if (optionItem) {
+                optionItem.remove(); // Remove the option from the DOM
+            }
+        }
+
+        function deleteQuestion(questionId) {
+            const questionBox = document.getElementById(questionId);
+            if (questionBox) {
+                questionBox.remove(); // Remove the question box from the DOM
+            }
+        }
+
+        function submitForm() {
+            const questionsContainer = document.getElementById('questions-container');
+            const questionBoxes = questionsContainer.querySelectorAll('.question-box');
+            const questionsData = [];
+
+            questionBoxes.forEach((box, index) => {
+                const type = box.querySelector('.question-type').value;
+                const questionInput = box.querySelector('[name="questions"]').value;
+                const required = box.querySelector(`#required-${index + 1}`).checked;
+                const options = [];
+
+                if (type === 'dropdown' || type === 'multiple-choice' || type === 'checkbox') {
+                    const optionInputs = box.querySelectorAll('.option-input');
+                    optionInputs.forEach(option => {
+                        options.push(option.value);
+                    });
+                }
+
+                const questionData = {
+                    id: index + 1,
+                    type: type,
+                    question: questionInput,
+                    required: required,
+                    options: options.length > 0 ? options : undefined,
+                };
+
+                questionsData.push(questionData);
+            });
+
+            fetch('/demo/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify(questionsData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    alert('Questions saved successfully!');
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+</body>
+
+</html>

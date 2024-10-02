@@ -1,0 +1,207 @@
+{% extends "../layout.html" %}
+
+{% load static %}
+
+{% block title %}Create Event{% endblock %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/questions.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <div class="container">
+        <h4>Event Details</h4>
+        <form id="question-form">
+            <div class="outer-container p-4 mb-4">
+                <div class="questionBox-flex-ind">
+                    <label class="mb-0">Event Name</label>
+                    <input class="event-input" required/>
+                </div>
+                <div class="questionBox-flex-ind">
+                    <label class="mb-0">Event Description</label>
+                    <textarea class="event-input"></textarea>
+                </div>
+                <div class="questionBox-flex-ind">
+                    <label class="mb-0">Event Full Details</label>
+                    <textarea class="event-input"></textarea>
+                </div>
+                
+            </div>
+            <h4>Event Info</h4>
+            <div class="outer-container p-4 mb-4">
+                <div class="questionBox-flex-ind">
+                    <label class="mb-0">Poster</label>
+                    <input class="event-input" required type="file"/>
+                </div>
+                <div class="questionBox-flex-ind">
+                    <label class="mb-0">Date</label>
+                    <input class="event-input" required type="date"/>
+                </div>
+                <div class="questionBox-flex-ind">
+                    <label class="mb-0">Location</label>
+                    <input class="event-input" required/>
+                </div>
+                <div class="questionBox-flex-ind">
+                    <label class="mb-0">Total Tickets</label>
+                    <input class="event-input" required/>
+                </div>
+                
+            </div>
+            <h4>Registration Questions</h4>
+            <div class="outer-container">
+                <div id="questions-container"></div>
+                <div class="button-add-question">
+                    <button id="add-question" type="button" class="btn-primary">Add Question</button>
+                </div>
+            </div>
+            <div class="w-100 d-flex justify-content-center mt-3"><button  type="submit" class="btn-success" onclick="submitForm()">Create Event</button></div>
+        </form>
+    </div>
+
+    <script>
+        let questionCount = 0; // To track unique question IDs
+
+        document.getElementById('add-question').addEventListener('click', function () {
+            questionCount++; // Increment the question count for unique IDs
+            const questionBox = document.createElement('div');
+            questionBox.className = 'question-box';
+            questionBox.id = `question-${questionCount}`; // Unique ID for each question
+
+            questionBox.innerHTML = `
+                <select class="question-type" onchange="handleQuestionTypeChange(this)" required>
+                    <option value="">Select Question Type</option>
+                    <option value="text">Short Answer</option>
+                    <option value="dropdown">Dropdown</option>
+                    <option value="multiple-choice">Multiple Choice</option>
+                    <option value="checkbox">Checkbox</option>
+                    <option value="file-upload">File Upload</option>
+                </select>
+                <div class="question-inputs"></div>
+                <div class="question-flex">
+                <div class="required-checkbox">
+                    <input type="checkbox" id="required-${questionCount}">
+                    <label for="required-${questionCount}">Required</label>
+                </div>
+                <button type="button" class="btn-danger" onclick="deleteQuestion('${questionBox.id}')">Delete Question</button>
+                </div>
+            `;
+            document.getElementById('questions-container').appendChild(questionBox);
+        });
+
+        function handleQuestionTypeChange(select) {
+            const type = select.value;
+            const inputsContainer = select.nextElementSibling; // Get the next sibling div for inputs
+            inputsContainer.innerHTML = ''; // Clear previous inputs
+
+            if (type === 'text' || type === 'file-upload') {
+                inputsContainer.innerHTML = `<input type="text" name="questions" placeholder="Enter your question" required>`;
+            } else if (type === 'dropdown' || type === 'multiple-choice' || type === 'checkbox') {
+                inputsContainer.innerHTML = `
+                    <input type="text" name="questions" placeholder="Enter your question" required>
+                    <div id="options-container-${questionCount}">
+                        <div class="option-item">
+                            <input type="text" class="option-input" placeholder="Option 1" required>
+                            <button type="button" class="btn-danger" onclick="deleteOption(this)">Remove</button>
+                        </div>
+                        <div class="option-item">
+                            <input type="text" class="option-input" placeholder="Option 2" required>
+                            <button type="button" class="btn-danger" onclick="deleteOption(this)">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="addOption(${questionCount})">Add Option</button>
+                `;
+            }
+        }
+
+        function addOption(questionId) {
+            const optionsContainer = document.getElementById(`options-container-${questionId}`);
+            const newOption = document.createElement('div');
+            newOption.className = 'option-item';
+            newOption.innerHTML = `
+                <input type="text" class="option-input" placeholder="Option ${optionsContainer.children.length + 1}" required>
+                <button type="button" class="btn-danger" onclick="deleteOption(this)">Delete Option</button>
+            `;
+            optionsContainer.appendChild(newOption);
+        }
+
+        function deleteOption(button) {
+            const optionItem = button.parentElement;
+            if (optionItem) {
+                optionItem.remove(); // Remove the option from the DOM
+            }
+        }
+
+        function deleteQuestion(questionId) {
+            const questionBox = document.getElementById(questionId);
+            if (questionBox) {
+                questionBox.remove(); // Remove the question box from the DOM
+            }
+        }
+
+        function submitForm() {
+            const questionsContainer = document.getElementById('questions-container');
+            const questionBoxes = questionsContainer.querySelectorAll('.question-box');
+            const questionsData = [];
+
+            questionBoxes.forEach((box, index) => {
+                const type = box.querySelector('.question-type').value;
+                const questionInput = box.querySelector('[name="questions"]').value;
+                const required = box.querySelector(`#required-${index + 1}`).checked;
+                const options = [];
+
+                if (type === 'dropdown' || type === 'multiple-choice' || type === 'checkbox') {
+                    const optionInputs = box.querySelectorAll('.option-input');
+                    optionInputs.forEach(option => {
+                        options.push(option.value);
+                    });
+                }
+
+                const questionData = {
+                    id: index + 1,
+                    type: type,
+                    question: questionInput,
+                    required: required,
+                    options: options.length > 0 ? options : undefined,
+                };
+
+                questionsData.push(questionData);
+            });
+
+            fetch('/createevent/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify(questionsData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    alert('Questions saved successfully!');
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+</div>
+{% endblock %}

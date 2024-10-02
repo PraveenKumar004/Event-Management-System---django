@@ -1,0 +1,59 @@
+{% extends "../layout.html" %}
+
+{% load static %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/questions.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="register">
+    <img class="register-img" src="{% static '/images/im.png' %}" />
+    <div>
+        <h4 class=" p-3">Hackathon game</h4>
+        <p class="p-3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse possimus pariatur ut reprehenderit
+            dicta! Eos facere enim reprehenderit quaerat architecto veritatis, aut ipsa hic non itaque porro quibusdam
+            deleniti amet! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id eligendi dolorem aspernatur qui
+            recusandae maxime assumenda alias velit provident est? Placeat eligendi sunt et ad provident, asperiores
+            quia accusantium similique!</p>
+        <div class="home-event-title mt-0 p-3">
+            <div class="home-event-section">
+                <h6 class="home-font">Date</h6>
+                <p>12/12/2024</p>
+            </div>
+            <div class="home-event-section">
+                <h6 class="home-font">Location</h6>
+                <p>Erode</p>
+            </div>
+            <div class="home-event-section">
+                <h6 class="home-font">Tickets Available</h6>
+                <p>123</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="register-form mt-4">
+    <h4>Registeration Form</h4>
+    <div class="outer-container p-4 mb-4 mt-3">
+        <div class="questionBox-flex-ind">
+            <label class="mb-0">Name</label>
+            <input class="event-input" required />
+        </div>
+        <div class="questionBox-flex-ind">
+            <label class="mb-0">Phone Number</label>
+            <input class="event-input" required />
+        </div>
+        <div class="questionBox-flex-ind">
+            <label class="mb-0">Email</label>
+            <input class="event-input" required />
+        </div>
+    </div>
+    <button class="button-event" onclick="window.location.href='/event/register/'">Register</button>
+</div>
+
+</div>
+
+{% endblock %}

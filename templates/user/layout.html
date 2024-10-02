@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/home-layout.css' %}">
+    {% block extra_styles %}{% endblock %}
+    <title>Event Management</title>
+</head>
+
+<body onload="getUsername()">
+    <div class="layout">
+        <div class="topnav">
+            <div class="home-head-section1">
+                <h4 class="head-title">Events</h4>
+            </div>
+            <div class="home-head-section2">
+                <input class="home-search" type="search" placeholder="search events.." />
+                <button type="submit" class="home-search-button"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="home-head-section3">
+                <a class="home-links" href="/">Home</a>
+                <a class="home-links">Featured Events</a>
+                <a class="home-links" href="/winners/">Winners</a>
+                <a class="home-links" id="loginSignupLink" href="/login/">Login/Signup</a>
+                <a id="usernameDisplay" class="home-links" href="/dashboard/" style="display:none;"></a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div>{% block content %}{% endblock %}</div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function getUsername() {
+           console.log("hello");
+           const username = getCookie("username");
+           console.log(username);
+            if (username) {
+                document.getElementById("loginSignupLink").style.display = "none";
+                const usernameDisplay = document.getElementById("usernameDisplay");
+                usernameDisplay.textContent = `${username}`;
+                usernameDisplay.style.display = "inline"; 
+            }
+        }
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+    </script>
+
+</body>
+
+</html>
