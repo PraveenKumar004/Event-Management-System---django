@@ -2,97 +2,98 @@
 
 {% load static %}
 
-{% block title %}Create Event{% endblock %}
+{% block title %}Edit Event{% endblock %}
 
 {% block extra_styles %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="stylesheet" href="{% static 'css/questions.css' %}">
+<link rel="stylesheet" href="{% static 'css/questions.css' %}">  
 {% endblock %}
 
 {% block content %}
 
 <div>
     <div class="container">
-        <h4>Event Details</h4>
-        <form id="question-form" onsubmit="submitForm(event)">
+        <h4>Edit Event Details</h4>
+        <form id="event-form" onsubmit="submitForm(event)" data-event-id="{{ event.id }}">
             <div class="outer-container p-4 mb-4">
                 <div class="questionBox-flex-ind">
                     <label class="mb-0">Event Name</label>
-                    <input name="name" class="event-input" required />
+                    <input name="name" class="event-input" value="{{ event.name }}" required />
                 </div>
                 <div class="questionBox-flex-ind">
                     <label class="mb-0">Event Description</label>
-                    <textarea name="description" class="event-input" required></textarea>
+                    <textarea name="description" class="event-input" required>{{ event.description }}</textarea>
                 </div>
                 <div class="questionBox-flex-ind">
                     <label class="mb-0">Event Full Details</label>
-                    <textarea name="full_details" class="event-input" required></textarea>
+                    <textarea name="full_details" class="event-input" required>{{ event.full_details }}</textarea>
                 </div>
             </div>
             <h4>Event Info</h4>
             <div class="outer-container p-4 mb-4">
                 <div class="questionBox-flex-ind">
                     <label class="mb-0">Poster</label>
-                    <input name="poster" id="poster-input" class="event-input" required type="file" />
-                    <img id="poster-preview" src="#" alt="Image Preview"
-                        style="display:none; max-width: 100px; margin-top: 10px;">
+                    <input name="poster" id="poster-input" class="event-input" type="file" onchange="previewImage(event)" />
+                    <img id="poster-preview" src="{{ event.poster.url }}" alt="Image Preview" style="max-width: 100px; margin-top: 10px;">
                 </div>
                 <div class="questionBox-flex-ind">
                     <label class="mb-0">Date</label>
-                    <input name="date" class="event-input" required type="date" />
+                    <input name="date" class="event-input" required type="date" value="{{ event.date|date:'Y-m-d' }}" />
                 </div>
                 <div class="questionBox-flex-ind">
                     <label class="mb-0">Location</label>
-                    <input name="location" class="event-input" required />
+                    <input name="location" class="event-input" required value="{{ event.location }}" />
                 </div>
                 <div class="questionBox-flex-ind">
                     <label class="mb-0">Total Tickets</label>
-                    <input name="total_tickets" class="event-input" type="number" required />
+                    <input name="total_tickets" class="event-input" type="number" required value="{{ event.total_tickets }}" />
                 </div>
             </div>
             <h4>Registration Questions</h4>
             <div class="outer-container">
-                <div id="questions-container"></div>
+                <div id="questions-container">
+                    {% for question in event.questions %}
+                    <div class="question-box mb-3">
+                        <div class="questionBox-flex-ind">
+                            <label>Question</label>
+                            <input name="questions" class="event-input" value="{{ question.question }}" required />
+                        </div>
+                        <div class="d-flex mt-2 justify-content-between">
+                            <div>
+                                <label>Required?</label>
+                                <input type="checkbox" class="mb-3 ml-1 mr-5" {% if question.required %}checked{% endif %}>
+                            </div>
+                            <button type="button" class="ml-1 btn btn-danger delete-question p-1" style="width: 80px;">Delete</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
                 <div class="button-add-question">
                     <button id="add-question" type="button" class="btn-primary">Add Question</button>
                 </div>
             </div>
             <div class="w-100 d-flex justify-content-center mt-3">
-                <button type="submit" class="btn-success">Create Event</button>
+                <button type="submit" class="btn-success">Update Event</button>
             </div>
         </form>
     </div>
 
     <script>
-       
-        document.getElementById('poster-input').addEventListener('change', function () {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const img = document.getElementById('poster-preview');
-                    img.src = e.target.result;
-                    img.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        
-        document.getElementById('add-question').addEventListener('click', function () {
+        function addQuestion() {
             const questionsContainer = document.getElementById('questions-container');
             const questionBox = document.createElement('div');
             questionBox.className = 'question-box mb-3';
 
             questionBox.innerHTML = `
                 <div class="questionBox-flex-ind">
-                    <label class="mb-0">Question</label>
+                    <label>Question</label>
                     <input name="questions" class="event-input" required />
                 </div>
                 <div class="d-flex mt-2 justify-content-between">
                     <div>
                         <label>Required?</label>
-                        <input type="checkbox" class="mb-3 ml-1 mr-5" id="required-${questionsContainer.children.length + 1}">
+                        <input type="checkbox" class="mb-3 ml-1 mr-5">
                     </div>
                     <button type="button" class="ml-1 btn btn-danger delete-question p-1" style="width: 80px;">Delete</button>
                 </div>
@@ -101,25 +102,26 @@
             questionsContainer.appendChild(questionBox);
 
             questionBox.querySelector('.delete-question').addEventListener('click', function () {
-                questionBox.remove(); 
+                questionBox.remove();
             });
-        });
+        }
+
+        document.getElementById('add-question').addEventListener('click', addQuestion);
 
         function submitForm(event) {
-            event.preventDefault(); 
-
-            const formData = new FormData(document.getElementById('question-form')); 
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const eventId = event.target.dataset.eventId;  
+            const questionsData = [];
 
             const questionsContainer = document.getElementById('questions-container');
             const questionBoxes = questionsContainer.querySelectorAll('.question-box');
-            const questionsData = [];
 
-            questionBoxes.forEach((box, index) => {
-                const questionInput = box.querySelector('[name="questions"]').value;
-                const required = box.querySelector(`#required-${index + 1}`).checked;
+            questionBoxes.forEach((box) => {
+                const questionInput = box.querySelector('input[name="questions"]').value;
+                const required = box.querySelector('input[type="checkbox"]').checked;
 
                 const questionData = {
-                    id: index + 1,
                     question: questionInput,
                     required: required,
                 };
@@ -129,26 +131,19 @@
 
             formData.append('questions', JSON.stringify(questionsData));
 
-            const userIdFromURL = new URLSearchParams(window.location.search).get('userId'); 
-            const userIdFromCookie = getCookie('id'); 
-            const userId = userIdFromURL || userIdFromCookie; 
-
-            if (userId) {
-                formData.append('userId', userId); 
-            }
-
-            fetch('/createevent/', {
+            fetch(`/edit/event/${eventId}/`, {  
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': getCookie('csrftoken'), 
+                    'X-CSRFToken': getCookie('csrftoken'),  
                 },
                 body: formData,
             })
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    alert('Event created successfully!');
-                    document.getElementById('question-form').reset();
+                    alert('Event updated successfully!');
+                    location.reload();
+                    document.getElementById('event-form').reset();
                     questionsContainer.innerHTML = ''; 
                 })
                 .catch(error => console.error('Error:', error));
@@ -167,6 +162,20 @@
                 }
             }
             return cookieValue;
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('poster-preview');
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;  
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);  
+            }
         }
     </script>
 </div>

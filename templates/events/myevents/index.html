@@ -11,93 +11,95 @@
 
 {% block content %}
 <div class="myevents-top">
-    <div><button type="button" class="button-event" onclick="window.location.href='/createevent/'">Create
-            Event</button></div>
+    <div>
+        <button type="button" class="button-event" onclick="window.location.href='/createevent/'">Create Event</button>
+    </div>
     <div class="home-head-section2">
         <input class="event-search" type="search" placeholder="search events.." />
         <button type="submit" class="event-search-button"><i class="fas fa-search"></i></button>
     </div>
 </div>
 <div class="event-listing">
+    {% for event in events %}
     <div class="list-event">
         <div class="list-event-box">
-            <div class="list-event-img"><img class="img-class" src="{% static '/images/im2.png' %}"
-                    alt="Example Image" /></div>
+            <div class="list-event-img">
+                <img class="img-class" src="{{ event.poster.url }}" alt="{{ event.title }}" />
+            </div>
             <div class="list-event-title">
-                <h4 class="font" onclick="window.location.href='/dashboard/events/'" style="cursor: pointer;">Hackathon Event</h4>
+                <h4 class="font" onclick="window.location.href='/dashboard/events/{{ event.id }}'" style="cursor: pointer;">{{ event.name }}</h4>
                 <div>
-                    <h6 onclick="window.location.href='/annoncewinner/events/'" style="cursor: pointer;">Annonce Winner</h6>
+                    <a href="/edit/event/{{ event.id }}"><i class="fas fa-edit"></i></a>
+                    <button class="pl-3 text-dark" style="border: none; background-color: #fff;" 
+                            data-toggle="modal" 
+                            data-target="#deleteModal{{ event.id }}">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             </div>
             <div class="list-event-title mt-0">
                 <div class="event-section">
                     <h6 class="font">Date</h6>
-                    <p>12/12/2024</p>
+                    <p>{{ event.date }}</p>
                 </div>
                 <div class="event-section">
                     <h6 class="font">Location</h6>
-                    <p>Erode</p>
+                    <p>{{ event.location }}</p>
                 </div>
                 <div class="event-section">
                     <h6 class="font">Tickets Available</h6>
-                    <p>123</p>
+                    <p>{{ event.total_tickets }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteModal{{ event.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ event.id }}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel{{ event.id }}">Alert</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete "{{ event.name }}"?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteEvent({{event.id}})">Yes, Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="list-event">
-        <div class="list-event-box">
-            <div class="list-event-img"><img class="img-class" src="{% static '/images/im.png' %}"
-                    alt="Example Image" /></div>
-            <div class="list-event-title">
-                <h4 class="font">Hackathon Event</h4>
-                <div>
-                    <a><i class="fas fa-edit"></i> </a>
-                    <a class="p-3 text-dark"><i class="fas fa-trash"></i> </a>
-                </div>
-            </div>
-            <div class="list-event-title mt-0">
-                <div class="event-section">
-                    <h6 class="font">Date</h6>
-                    <p>12/12/2024</p>
-                </div>
-                <div class="event-section">
-                    <h6 class="font">Location</h6>
-                    <p>Erode</p>
-                </div>
-                <div class="event-section">
-                    <h6 class="font">Tickets Available</h6>
-                    <p>123</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="list-event">
-        <div class="list-event-box">
-            <div class="list-event-img"><img class="img-class" src="{% static '/images/im4.jpg' %}"
-                    alt="Example Image" /></div>
-            <div class="list-event-title">
-                <h4 class="font">Hackathon Event</h4>
-                <div>
-                    <a><i class="fas fa-edit"></i></a>
-                    <a class="p-3 text-dark"><i class="fas fa-trash"></i></a>
-                </div>
-            </div>
-            <div class="list-event-title mt-0">
-                <div class="event-section">
-                    <h6 class="font">Date</h6>
-                    <p>12/12/2024</p>
-                </div>
-                <div class="event-section">
-                    <h6 class="font">Location</h6>
-                    <p>Erode</p>
-                </div>
-                <div class="event-section">
-                    <h6 class="font">Tickets Available</h6>
-                    <p>123</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% empty %}
+    <p>No events available.</p>
+    {% endfor %}
 </div>
+
+<script>
+    function deleteEvent(eventId) {
+    
+        fetch(`/delete/event/${eventId}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload(); 
+            } else {
+                alert('Failed to delete the event.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
+    }
+    </script>
+
 {% endblock %}

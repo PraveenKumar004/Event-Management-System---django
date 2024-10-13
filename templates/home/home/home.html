@@ -9,87 +9,36 @@
 
 {% block content %}
 <div class="home-list-events">
+    {% for event in events %}
     <div class="home-event mb-3 mt-1">
         <div class="home-event-box">
-            <div class="home-event-img"><img class="img-class" src="{% static '/images/im2.png' %}"
-                    alt="Example Image" /></div>
+            <div class="home-event-img">
+                <img class="img-class" src="{{ event.poster.url }}" alt="{{ event.name }} Poster" />
+            </div>
             <div class="home-event-title">
-                <h4 class="font head-hover" onclick="window.location.href='/event/'" style="cursor: pointer;">Hackathon
-                    Event</h4>
+                <h4 class="font head-hover" onclick="window.location.href='/event/{{ event.id }}/'" style="cursor: pointer;">
+                    {{ event.name }}
+                </h4>
                 <div>
-                    <button class="button-event" onclick="window.location.href='/event/register/'">Register</button>
+                    <button class="button-event" onclick="window.location.href='/event/register/{{ event.id }}/'">Register</button>
                 </div>
             </div>
             <div class="home-event-title mt-0">
                 <div class="home-event-section">
                     <h6 class="home-font">Date</h6>
-                    <p>12/12/2024</p>
+                    <p>{{ event.date }}</p>
                 </div>
                 <div class="home-event-section">
                     <h6 class="home-font">Location</h6>
-                    <p>Erode</p>
+                    <p>{{ event.location }}</p>
                 </div>
                 <div class="home-event-section">
                     <h6 class="home-font">Tickets Available</h6>
-                    <p>123</p>
+                    <p>{{ event.total_tickets }}</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="home-event mb-3 mt-1">
-        <div class="home-event-box">
-            <div class="home-event-img"><img class="img-class" src="{% static '/images/im.png' %}"
-                    alt="Example Image" /></div>
-            <div class="home-event-title">
-                <h4 class="font head-hover" onclick="window.location.href='/event/'" style="cursor: pointer;">Hackathon
-                    Event</h4>
-                <div>
-                    <button class="button-event" onclick="window.location.href='/event/register/'">Register</button>
-                </div>
-            </div>
-            <div class="home-event-title mt-0">
-                <div class="home-event-section">
-                    <h6 class="home-font">Date</h6>
-                    <p>12/12/2024</p>
-                </div>
-                <div class="home-event-section">
-                    <h6 class="home-font">Location</h6>
-                    <p>Erode</p>
-                </div>
-                <div class="home-event-section">
-                    <h6 class="home-font">Tickets Available</h6>
-                    <p>123</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="home-event mb-3 mt-1">
-        <div class="home-event-box">
-            <div class="home-event-img"><img class="img-class" src="{% static '/images/im.png' %}"
-                    alt="Example Image" /></div>
-            <div class="home-event-title">
-                <h4 class="font head-hover" onclick="window.location.href='/event/'" style="cursor: pointer;">Hackathon
-                    Event</h4>
-                <div>
-                    <button class="button-event" onclick="window.location.href='/event/register/'">Register</button>
-                </div>
-            </div>
-            <div class="home-event-title mt-0">
-                <div class="home-event-section">
-                    <h6 class="home-font">Date</h6>
-                    <p>12/12/2024</p>
-                </div>
-                <div class="home-event-section">
-                    <h6 class="home-font">Location</h6>
-                    <p>Erode</p>
-                </div>
-                <div class="home-event-section">
-                    <h6 class="home-font">Tickets Available</h6>
-                    <p>123</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 </div>
-
 {% endblock %}

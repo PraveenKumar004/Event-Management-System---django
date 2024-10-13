@@ -1,3 +1,5 @@
+
+
 {% extends "../layout.html" %}
 
 {% load static %}
@@ -10,77 +12,34 @@
 
 {% block content %}
 <div class="register">
-    <img class="register-img" src="{% static '/images/im.png' %}" />
+    <img class="register-img" src="{{ event.poster.url }}" alt="{{ event.name }}" />
     <div>
         <div class=" w-100 d-flex justify-content-between">
-            <h4 class=" p-3">Hackathon Event</h4> 
-            <button class="button-event mt-2" onclick="window.location.href='/event/register/'">Register</button>
+            <h4 class=" p-3">{{ event.name }}</h4> 
+            <button class="button-event mt-2" onclick="window.location.href=`/event/register/{{ event.id }}`">Register</button>
         </div>
-        <p class="p-3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse possimus pariatur ut reprehenderit
-            dicta! Eos facere enim reprehenderit quaerat architecto veritatis, aut ipsa hic non itaque porro quibusdam
-            deleniti amet! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id eligendi dolorem aspernatur qui
-            recusandae maxime assumenda alias velit provident est? Placeat eligendi sunt et ad provident, asperiores
-            quia accusantium similique!</p>
+        <p class="p-3">{{ event.description }}</p>
         <div class="home-event-title mt-0 p-3">
             <div class="home-event-section">
                 <h6 class="home-font">Date</h6>
-                <p>12/12/2024</p>
+                <p>{{ event.date }}</p>
             </div>
             <div class="home-event-section">
                 <h6 class="home-font">Location</h6>
-                <p>Erode</p>
+                <p>{{ event.location }}</p>
             </div>
             <div class="home-event-section">
                 <h6 class="home-font">Tickets Available</h6>
-                <p>123</p>
+                <p>{{ event.total_tickets }}</p>
             </div>
         </div>
     </div>
 </div>
 <div class="register-form">
     <h4 class="p-3">Event Criteria and Stages</h4>
-    
-    <!-- Event Description -->
-    <div class="p-3">
-        <h5>About the Event</h5>
-        <p>The Hackathon game is a competitive event where teams collaborate to develop innovative solutions to real-world problems. Participants will work on various challenges over a 24-hour period, and their solutions will be evaluated by a panel of judges.</p>
-    </div>
 
-    <!-- Participation Criteria -->
     <div class="p-3">
-        <h5>Participation Criteria</h5>
-        <ul>
-            <li>Participants must be between 18-35 years old.</li>
-            <li>Teams should consist of 2-4 members.</li>
-            <li>Each team must have at least one developer and one designer.</li>
-            <li>Participants should have basic knowledge of programming and problem-solving skills.</li>
-            <li>Teams can bring their own laptops and tools but internet access will be provided.</li>
-        </ul>
-    </div>
-
-    <!-- Event Stages -->
-    <div class="p-3">
-        <h5>Event Stages</h5>
-        <ol>
-            <li><strong>Stage 1 - Idea Submission:</strong> Teams will submit a short pitch of their project idea at the start of the event. The judges will review the ideas for feasibility and creativity.</li>
-            <li><strong>Stage 2 - Development:</strong> Once the ideas are approved, teams will begin working on the prototype or solution over the next 24 hours. Mentors will be available to provide guidance.</li>
-            <li><strong>Stage 3 - Presentation:</strong> Teams will present their final product or prototype in front of the judging panel. Each team will have 10 minutes to showcase their solution.</li>
-            <li><strong>Stage 4 - Judging and Awards:</strong> The judges will evaluate the presentations based on creativity, technical execution, and potential impact. Winners will be announced during the closing ceremony.</li>
-        </ol>
-    </div>
-
-    <!-- Judging Criteria -->
-    <div class="p-3">
-        <h5>Judging Criteria</h5>
-        <ul>
-            <li><strong>Innovation:</strong> How unique and original is the idea?</li>
-            <li><strong>Technical Execution:</strong> How well is the solution implemented? Is it functional?</li>
-            <li><strong>Impact:</strong> Does the solution address the problem effectively? What is the potential impact?</li>
-            <li><strong>Presentation:</strong> How clear and persuasive is the team’s pitch?</li>
-        </ul>
+        <p>{{ event.full_details }}</p>
     </div>
 </div>
-
-
-
 {% endblock %}
