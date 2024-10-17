@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'demo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'eventManagement',             
+        'NAME': 'event',             
         'USER': 'root',               
         'PASSWORD': 'kumar@04',           
         'HOST': 'localhost',                    

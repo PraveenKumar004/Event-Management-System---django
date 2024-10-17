@@ -1,0 +1,63 @@
+{% extends "../layout.html" %}
+
+{% block content %}
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert {
+        font-size: 1.25rem;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .alert-success {
+        background-color: #d4edda; 
+        color: #155724; 
+        border: 1px solid #c3e6cb; 
+    }
+
+    .btn-primary {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="alert alert-success" role="alert"> 
+        {{ message }}
+    </div>
+
+    <div class="w-100 d-flex justify-content-center">
+        <button onclick="window.location.href='/'" class="btn btn-primary">OK</button>
+    </div>
+</div>
+{% endblock %}

@@ -17,3 +17,16 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name 
+    
+class EventRegistration(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user_id = models.IntegerField()
+    answers = models.TextField()  
+
+    class Meta:
+        db_table = 'event_registration'
+        unique_together = ('event', 'user_id')
+        managed = False 
+    
+    def __str__(self):
+        return self.user_id

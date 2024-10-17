@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from django.http import JsonResponse
 import json
-from .models import Event
+from .models import Event,EventRegistration
+from django.contrib.auth.models import User
 
 def dashboard(request):
     return render(request, 'events/dashboard/index.html')
@@ -20,15 +21,31 @@ def registerevents(request):
     user= request.COOKIES.get('id')
     if not user:
         return redirect('/login')
-    
-    return render(request, 'events/registeredEvents/index.html')
 
-def viewevent(request):
+    registrations = EventRegistration.objects.filter(user_id=user)
+    events = [registration.event for registration in registrations]
+    
+    return render(request, 'events/registeredEvents/index.html', {'events': events})
+
+
+def viewevent(request, event_id):
     user= request.COOKIES.get('id')
     if not user:
         return redirect('/login')
 
-    return render(request, 'events/viewEvent/event.html')
+    event = get_object_or_404(Event, id=event_id)   
+    registrations = EventRegistration.objects.filter(event=event_id)
+
+    for registration in registrations:
+        registration.user = User.objects.get(id=registration.user_id)
+  
+    context = {
+        'event': event,
+        'registrations': registrations,
+    }
+    
+    return render(request, 'events/viewEvent/event.html', context)
+
 
 def annoncewinner(request):
     user= request.COOKIES.get('id')
@@ -36,6 +53,7 @@ def annoncewinner(request):
         return redirect('/login')
 
     return render(request, 'events/annoncewinner/annoncewinner.html')
+
 
 def create_event(request):
     user = request.COOKIES.get('id')

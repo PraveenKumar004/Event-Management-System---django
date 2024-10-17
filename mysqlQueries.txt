@@ -1,0 +1,23 @@
+CREATE TABLE event (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    full_details TEXT NOT NULL,
+    poster VARCHAR(255) NOT NULL,  -- Adjust depending on your storage solution
+    date DATE NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    total_tickets INT NOT NULL,
+    questions JSON NOT NULL,
+    user_id INT NOT NULL
+);
+
+
+CREATE TABLE event_registration (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    user_id INT NOT NULL,
+    answers TEXT NOT NULL,
+    UNIQUE KEY unique_event_user (event_id, user_id),
+    FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE
+);
+

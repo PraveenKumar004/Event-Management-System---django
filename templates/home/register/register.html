@@ -34,7 +34,7 @@
 
 <div class="register-form mt-4">
     <h4>Registration Form</h4>
-    <form action="/event/register/" method="POST">
+    <form action="/event/register/submit/{{ event.id }}/" method="POST">
         <div class="outer-container p-4 mb-4 mt-3">
             {% csrf_token %}
             <div class="d-flex flex-column mb-3">
