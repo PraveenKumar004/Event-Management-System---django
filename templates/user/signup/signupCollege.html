@@ -1,0 +1,99 @@
+
+{% extends "../layout.html" %}
+{% load static %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-outer">
+    <div class="home-event-box mt-4">
+        <form method="POST" action="{% url 'generate_otp' %}" id="otp-form">
+            {% csrf_token %}
+            <div class="signup-box">
+                <h4 class="d-flex justify-content-center mt-3">College Signup</h4>
+
+                <input type="hidden" name="role" value="user" />
+
+                <div class="mt-3 pl-3 pr-3">
+                    <label>Enter Email</label>
+                    <div class="w-100 d-flex">
+                        <input class="w-75" type="email" name="username" value="{{ username }}" required />
+                        <button type="submit" id="otp-button" class="button-event ml-2 p-1" style="width: 100px; height: fit-content;">
+                            Send OTP
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="POST" action="{% url 'signupcollege' %}">
+            {% csrf_token %}
+            <div class="signup-box">
+                <input type="hidden" name="role" value="user" />
+                <input type="hidden"  name="username" value="{{ username }}"/>
+                <div class="mt-3 pl-3 pr-3 w-100 d-flex flex-column">
+                    <label>Enter OTP</label>
+                    <input class="w-75" type="text" name="otp" required />
+                </div>
+
+                <div class="mt-3 pl-3 pr-3">
+                    <label>Enter Password</label>
+                    <input class="w-75" type="password" name="password" required />
+                </div>
+
+                <div class="mt-3 pl-3 pr-3">
+                    <label>Re-Enter Password</label>
+                    <input class="w-75" type="password" name="password2" required />
+                </div>
+
+                {% if messages %}
+                <div class="mt-3">
+                    {% for message in messages %}
+                    <div class="alert alert-primary">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="mt-3 d-flex justify-content-center">
+                    <button type="submit" name="Signup" class="button-event">Signup</button>
+                </div>
+
+                <label class="mb-4">Already have an account? <a href="/login">Login</a></label>
+                <label class="mb-4">Want to Register a User? <a href="/signup">Click Here</a></label>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const otpButton = document.getElementById('otp-button');
+    let countdown;
+
+    function startCountdown(seconds) {
+        let remainingTime = seconds;
+        otpButton.disabled = true; 
+
+        countdown = setInterval(() => {
+            otpButton.textContent = ` Wait ${remainingTime--}s`;
+
+            if (remainingTime < 0) {
+                clearInterval(countdown);
+                otpButton.disabled = false; 
+                otpButton.textContent = 'Resend OTP'; 
+            }
+        }, 1000);
+    }
+
+    document.getElementById('otp-form').addEventListener('submit', function (event) {
+        event.preventDefault(); 
+
+        this.submit(); 
+        startCountdown(60);
+    });
+</script>
+{% endblock %}
+

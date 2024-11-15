@@ -8,8 +8,15 @@ CREATE TABLE event (
     location VARCHAR(255) NOT NULL,
     total_tickets INT NOT NULL,
     questions JSON NOT NULL,
-    user_id INT NOT NULL
+    user_id INT NOT NULL,
+    paid BOOLEAN NOT NULL DEFAULT FALSE,
+    amount INT NOT NULL DEFAULT 0;
+    total_collection INT NOT NULL DEFAULT 0;
 );
+
+ALTER TABLE event
+ADD COLUMN paid BOOLEAN NOT NULL DEFAULT FALSE,
+ADD COLUMN amount INT NOT NULL DEFAULT 0;
 
 
 CREATE TABLE event_registration (
@@ -17,7 +24,17 @@ CREATE TABLE event_registration (
     event_id INT NOT NULL,
     user_id INT NOT NULL,
     answers TEXT NOT NULL,
+    ALTER TABLE event_registration
+    participation BOOLEAN NOT NULL DEFAULT FALSE,
+    ticket_id varchar(255) NOT NULL ;
     UNIQUE KEY unique_event_user (event_id, user_id),
     FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE
 );
+
+
+pip install django
+pip install mysqlclient
+pip install reportlab
+pip install qrcode[pil]
+pip install Pillow
 

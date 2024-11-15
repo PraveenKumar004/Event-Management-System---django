@@ -10,6 +10,10 @@ class Event(models.Model):
     total_tickets = models.IntegerField()
     questions = models.JSONField()
     user_id = models.IntegerField()
+    paid = models.BooleanField()
+    amount = models.IntegerField()
+    total_collection = models.IntegerField()
+    winner = models.TextField()
 
     class Meta:
         db_table = 'event' 
@@ -21,7 +25,10 @@ class Event(models.Model):
 class EventRegistration(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user_id = models.IntegerField()
+    ticket_id = models.CharField(max_length=255)
     answers = models.TextField()  
+    participation = models.BooleanField(default=False)
+    winner = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'event_registration'
@@ -29,4 +36,4 @@ class EventRegistration(models.Model):
         managed = False 
     
     def __str__(self):
-        return self.user_id
+        return self.event.name

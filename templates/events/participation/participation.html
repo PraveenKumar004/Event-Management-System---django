@@ -1,0 +1,211 @@
+{% extends "../layoutCollege.html" %}
+{% load static %}
+
+{% block title %}Participation{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .dashboard-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: #f0f0f0;
+    }
+
+    .search-card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 40%;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+
+    .search-card input {
+        width: 70%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .search-card button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #3f51b5;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .search-card button:hover {
+        background-color: #2c387e;
+    }
+
+    .results {
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .result-item {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    .alert {
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    #my-qr-reader {
+        padding: 10px !important;
+        border: 1.5px solid #b2b2b2 !important;
+        border-radius: 8px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #my-qr-reader img[alt="Info icon"] {
+        display: none;
+    }
+
+    #my-qr-reader img[alt="Camera based scan"] {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    #html5-qrcode-anchor-scan-type-change {
+        text-decoration: none !important;
+        color: #1d9bf0;
+    }
+
+    video {
+        width: 75% !important;
+        height: 75%;
+        border: 1px solid #b2b2b2 !important;
+        border-radius: 0.25em;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'css/myevents.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="search-card">
+        <h4 class="mb-3">Search Event Registration</h4>
+        <form method="GET" action="{% url 'participation' %}">
+            <input type="text" name="ticket_id" placeholder="Enter Ticket ID" required />
+            <button type="submit">Search</button>
+        </form>
+        <div id="my-qr-reader" style="width: 100%">
+        </div>
+
+    </div>
+</div>
+{% if messages %}
+<div class="alert alert-success" role="alert">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+{% if results %}
+<div class="results">
+    <h3>Search Results:</h3>
+    {% for registration in results %}
+
+    <div class="w-100 d-flex justify-content-around gap-3 result-item">
+        <div class="home-event mb-3 mt-1" style="width:405px;">
+            <div class="w-100 d-flex">
+                <h4>Event Info</h4>
+            </div>
+            <div class="home-event-box" style="width:400px;">
+                <div class="home-event-img" style="height: 200px;">
+                    <img class="img-class" src="{{ registration.event.poster.url }}" alt="{{ event.name }} Poster" />
+                </div>
+                <div class="home-event-title">
+                    <h4 class="font head-hover" onclick="window.location.href='/event/{{ event.id }}/'"
+                        style="cursor: pointer;">
+                        {{ registration.event.name }}
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="register-event mb-3 mt-1">
+            <div class="w-100 d-flex">
+                <h4>User Info</h4>
+            </div>
+            <div class="register-event-box">
+                <div class="winner-event-img d-flex" style="height: 100px;">
+                    <img class="register-profile-img" src="/media/{{ users.email }}" alt="Example Image"  />
+                    <div class="mt-4 ms-5">
+                        <h6>{{ users }}</h6>
+                        <h6>{{ users.first_name }}</h6>
+                    </div>
+                </div>
+                <div class="home-event-title">
+                    <p class="font mt-2">Registered {{ registration.created_at|date:"Y-m-d" }}</p>
+                </div>
+                <div class="home-event-title">
+                    {% if registration.participation %}
+                    <h4 class="font">Status : Participated</h4>
+                    {% else %}
+                    <h4 class="font">Status : Not Participate</h4>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="mt-5">
+            {% if not registration.participation %}
+            <form method="POST" action="{% url 'add_to_event' registration.id %}">
+                {% csrf_token %}
+                <button type="submit" class="button-event">Add to Event</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p>No registrations found for this ticket ID.</p>
+    {% endfor %}
+</div>
+{% endif %}
+<script src="https://unpkg.com/html5-qrcode">
+</script>
+<script>
+    function domReady(fn) {
+        if (
+            document.readyState === "complete" ||
+            document.readyState === "interactive"
+        ) {
+            setTimeout(fn, 1000);
+        } else {    
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }
+    domReady(function () {
+        function onScanSuccess(decodeText, decodeResult) {
+            window.location.href = "{% url 'participation' %}?ticket_id=" + encodeURIComponent(decodeText);
+        }
+        let htmlscanner = new Html5QrcodeScanner(
+            "my-qr-reader",
+            { fps: 10, qrbos: 250 }
+        );
+        htmlscanner.render(onScanSuccess);
+    });
+</script>
+{% endblock %}

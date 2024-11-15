@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    {% block extra_styles %}{% endblock %}
+    <title>Event Management</title>
+</head>
+
+<body>
+    <style>
+        .headLink{
+            background-color: rgb(234, 248, 248);
+            border-radius: 5px;
+            text-indent: 10px;
+            padding-top: 10px;
+            padding-bottom: 7px;
+            margin-bottom: 8px;
+        }
+    </style>
+    
+    <div class="layout">
+        <!-- Sidebar -->
+        <div class="sidenav">
+        <div class="headLink"><a href="/"><h6>Events MS</h6></a></div>
+            <ul class="sidenav-link">
+                <li class="{% if request.path == '/dashboard/' %}active{% endif %}"><a href="/dashboard/">Dashboard</a></li>
+                <li class="{% if request.path == '/createevent/' %}active{% endif %}"><a href="/createevent/">Create Event</a></li>
+                <li class="{% if request.path == '/myevents/' %}active{% endif %}"><a href="/myevents/">Events</a></li>
+                <li class="{% if request.path == '/regiastration/' %}active{% endif %}"><a href="/regiastration/">Registration</a></li>
+                <li class="{% if request.path == '/participation/' %}active{% endif %}"><a href="/participation/">Participation</a></li>
+                <li class="{% if request.path == '/annoncewinner/events/' %}active{% endif %}"><a href="/annoncewinner/events/">Announce Winners</a></li>
+                <li class="{% if request.path == '/account/' %}active{% endif %}"><a href="/account/">Account Balance</a></li>
+                <li class="{% if request.path == '/profile/' %}active{% endif %}"><a href="/profile/">Profile</a></li>
+                <li class="{% if request.path == '/logout/' %}active{% endif %}"><a href="/logout/">Log out</a></li>
+            </ul>
+        </div>
+
+        <!-- Top Navbar -->
+        <div class="topnav">
+            <h5>{% block title %}{% endblock %}</h5>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div>{% block content %}{% endblock %}</div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

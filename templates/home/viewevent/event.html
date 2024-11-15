@@ -1,5 +1,3 @@
-
-
 {% extends "../layout.html" %}
 
 {% load static %}
@@ -15,8 +13,14 @@
     <img class="register-img" src="{{ event.poster.url }}" alt="{{ event.name }}" />
     <div>
         <div class=" w-100 d-flex justify-content-between">
-            <h4 class=" p-3">{{ event.name }}</h4> 
-            <button class="button-event mt-2" onclick="window.location.href=`/event/register/{{ event.id }}`">Register</button>
+            <h4 class=" p-3">{{ event.name }}</h4>
+            {% if event.total_tickets > 0 %}
+            <button class="button-event" onclick="window.location.href='/event/register/{{ event.id }}/'">
+                Register
+            </button>
+            {% else %}
+            <h5 class="house-full-message text-danger mt-3">House Full</h5>
+            {% endif %}
         </div>
         <p class="p-3">{{ event.description }}</p>
         <div class="home-event-title mt-0 p-3">

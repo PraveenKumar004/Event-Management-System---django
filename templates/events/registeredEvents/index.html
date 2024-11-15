@@ -27,8 +27,7 @@
             <div class="list-event-title">
                 <h4 class="font">{{ event.name }}</h4>
                 <div>
-                    <a href="#"><i class="fas fa-edit"></i></a> 
-                    <span class="p-3"><a href="#">View Ticket</a></span> 
+                    <span class="p-3"><a href=" {% url 'downloadticket' event.id %} ">View Ticket</a></span> 
                 </div>
             </div>
             <div class="list-event-title mt-0">

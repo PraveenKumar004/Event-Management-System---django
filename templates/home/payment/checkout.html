@@ -1,0 +1,114 @@
+{% extends "../layout.html" %}
+
+{% load static %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/questions.css' %}">
+<style>
+    .payment-box {
+        width: 400px;
+        margin: 50px auto;
+        padding: 30px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+        text-align: center;
+    }
+
+    .payment-box h2 {
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .payment-box p {
+        margin-bottom: 15px;
+        font-size: 16px;
+        color: #555;
+    }
+
+    .button-event {
+        background-color: #DB3E59;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .button-event:hover {
+        background-color: #287a9b;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<body>
+    <div class="payment-box">
+        <h2>Complete Your Payment</h2>
+        <p>You're just one step away from completing your registration! Confirm your payment below:</p>
+        <p><strong>Amount: ₹{{ amount|floatformat:2 }}</strong></p>
+        <button id="rzp-button" class="button-event">Pay Now</button>
+    </div>
+
+    <script>
+        var options = {
+            "key": "{{ razorpay_key_id }}",
+            "amount": {{ amount }} * 100,  // Amount in paise
+                "currency": "INR",
+                    "name": "Your Company",
+                        "description": "Test Transaction",
+                            "order_id": "{{ order_id }}",  // Razorpay order ID from the server
+                                "handler": function (response) {
+                                    fetch("{% url 'payment_success' %}", {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                            'X-CSRFToken': '{{ csrf_token }}'
+                                        },
+                                        body: new URLSearchParams({
+                                            "razorpay_payment_id": response.razorpay_payment_id,
+                                            "razorpay_order_id": response.razorpay_order_id,
+                                            "razorpay_signature": response.razorpay_signature
+                                        })
+                                    })
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Network response was not ok');
+                                            }
+                                            return response.text();
+                                        })
+                                        .then(data => {
+                                            alert("Payment Successful!");
+                                            window.location.href = "/";
+                                        })
+                                        .catch((error) => {
+                                            console.error('Error:', error);
+                                            alert("Payment processing failed. Please try again.");
+                                        });
+                                },
+        "modal": {
+            "ondismiss": function() {
+                alert('Payment was not completed. Please try again.');
+            }
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+            };
+
+        var rzp = new Razorpay(options);
+        document.getElementById('rzp-button').onclick = function (e) {
+            rzp.open();
+            e.preventDefault(); // Prevent default button action
+        };
+    </script>
+</body>
+{% endblock %}

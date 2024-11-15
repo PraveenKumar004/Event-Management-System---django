@@ -1,4 +1,4 @@
-{% extends "../layout.html" %}
+{% extends "../layoutCollege.html" %}
 
 {% load static %}
 
@@ -49,6 +49,14 @@
                     <label class="mb-0">Total Tickets</label>
                     <input name="total_tickets" class="event-input" type="number" required />
                 </div>
+                <div class="questionBox-flex-ind">
+                    <label class="mb-0">Paid</label>
+                    <input type="checkbox" id="paid-checkbox" onchange="toggleAmountInput()" style="width: 15px; height: 15px;"/>
+                </div>
+                <div class="questionBox-flex-ind">
+                    <label class="mb-0">Amount</label>
+                    <input name="amount" id="amount-input" class="event-input" type="number" disabled />
+                </div>
             </div>
             <h4>Registration Questions</h4>
             <div class="outer-container">
@@ -64,7 +72,6 @@
     </div>
 
     <script>
-       
         document.getElementById('poster-input').addEventListener('change', function () {
             const file = this.files[0];
             if (file) {
@@ -78,7 +85,6 @@
             }
         });
 
-        
         document.getElementById('add-question').addEventListener('click', function () {
             const questionsContainer = document.getElementById('questions-container');
             const questionBox = document.createElement('div');
@@ -101,14 +107,23 @@
             questionsContainer.appendChild(questionBox);
 
             questionBox.querySelector('.delete-question').addEventListener('click', function () {
-                questionBox.remove(); 
+                questionBox.remove();
             });
         });
 
-        function submitForm(event) {
-            event.preventDefault(); 
+        function toggleAmountInput() {
+            const paidCheckbox = document.getElementById('paid-checkbox');
+            const amountInput = document.getElementById('amount-input');
+            amountInput.disabled = !paidCheckbox.checked; // Enable/disable the amount input based on the checkbox state
+            if (!paidCheckbox.checked) {
+                amountInput.value = ''; // Clear amount if not paid
+            }
+        }
 
-            const formData = new FormData(document.getElementById('question-form')); 
+        function submitForm(event) {
+            event.preventDefault();
+
+            const formData = new FormData(document.getElementById('question-form'));
 
             const questionsContainer = document.getElementById('questions-container');
             const questionBoxes = questionsContainer.querySelectorAll('.question-box');
@@ -129,18 +144,33 @@
 
             formData.append('questions', JSON.stringify(questionsData));
 
-            const userIdFromURL = new URLSearchParams(window.location.search).get('userId'); 
-            const userIdFromCookie = getCookie('id'); 
-            const userId = userIdFromURL || userIdFromCookie; 
+            // Add paid status
+            const paidCheckbox = document.getElementById('paid-checkbox');
+            formData.append('paid', paidCheckbox.checked); // Will be true or false
+
+            console.log(paidCheckbox.checked)
+
+            // Add amount if paid
+            if (paidCheckbox.checked) {
+                const amountInput = document.getElementById('amount-input');
+                formData.append('amount', amountInput.value);
+                console.log(amountInput.value)
+            } else {
+                formData.append('amount', 0); // Set to 0 if not paid
+            }
+
+            const userIdFromURL = new URLSearchParams(window.location.search).get('userId');
+            const userIdFromCookie = getCookie('id');
+            const userId = userIdFromURL || userIdFromCookie;
 
             if (userId) {
-                formData.append('userId', userId); 
+                formData.append('userId', userId);
             }
 
             fetch('/createevent/', {
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': getCookie('csrftoken'), 
+                    'X-CSRFToken': getCookie('csrftoken'),
                 },
                 body: formData,
             })
@@ -149,7 +179,8 @@
                     console.log(data);
                     alert('Event created successfully!');
                     document.getElementById('question-form').reset();
-                    questionsContainer.innerHTML = ''; 
+                    document.getElementById('questions-container').innerHTML = '';
+                    document.getElementById('poster-preview').style.display = 'none'; // Hide poster preview
                 })
                 .catch(error => console.error('Error:', error));
         }

@@ -1,0 +1,58 @@
+{% extends "../layoutCollege.html" %}
+{% load static %}
+
+{% block title %}Account Balance{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .dashboard-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 20px;
+        background-color: #f0f0f0;
+    }
+
+    .card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 30%;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card h2 {
+        font-size: 36px;
+        margin: 10px 0;
+        color: #4a4a4a;
+    }
+
+    .card p {
+        font-size: 18px;
+        margin: 0;
+        color: #757575;
+    }
+
+    .icon {
+        font-size: 50px;
+        margin-bottom: 10px;
+        color: #3f51b5;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="card">
+        <i class="fas fa-chart-line icon"></i>
+        <h2>₹ {{collection}}</h2>
+        <p>Total Balance</p>
+    </div>
+</div>
+{% endblock %}

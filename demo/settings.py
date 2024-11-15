@@ -133,7 +133,25 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-# Default primary key field type
+
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'praveenkumarv989@gmail.com'
+EMAIL_HOST_PASSWORD = 'plmt ghnu xcvp zkpq'  # Use app password or OAuth token
+
+
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# settings.py
+RAZORPAY_KEY_ID = 'rzp_test_6Gq7LfcmUb5eUJ'
+RAZORPAY_KEY_SECRET = '1BNmDhIIfs3wLH56lw9xc0tS'
+
+
+# 4718 6091 0820 4366
+

@@ -1,4 +1,4 @@
-{% extends "../layout.html" %}
+{% extends "../layoutCollege.html" %}
 
 {% load static %}
 
@@ -47,7 +47,7 @@
         <div class="register-event mb-3 mt-1">
             <div class="register-event-box">
                 <div class="winner-event-img d-flex">
-                    <img class="register-profile-img" src="{% static '/images/prof1.png' %}" alt="Example Image" />
+                    <img class="register-profile-img" src="/media/{{ registration.user.email }}" alt="Example Image" />
                     <div class="mt-4 ms-5">
                         <h5>{{ registration.user.username }}</h5>
                         <h6>{{ registration.user_id }}</h6>

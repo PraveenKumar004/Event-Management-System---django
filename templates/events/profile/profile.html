@@ -1,0 +1,177 @@
+{% extends "../layout.html" %}
+
+{% load static %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/myevents.css' %}">
+<style>
+    .profile-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+    .profile-im {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-info {
+        text-align: start;
+        margin-bottom: 20px;
+        padding-left: 50px;
+    }
+
+    .profile-info p {
+        font-size: 16px;
+        color: #555;
+        margin: 10px 0;
+    }
+
+    .profile-photo {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-photo:hover {
+        transform: scale(1.1);
+    }
+
+    .edit-button {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 20px 0;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .edit-button:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    .save-button {
+        background-color: #28a745;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .save-button:hover {
+        background-color: #218838;
+    }
+
+    .edit-form {
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s forwards;
+    }
+
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .edit-form input[type="text"],
+    .edit-form input[type="file"] {
+        width: 100%;
+        padding: 12px;
+        margin: 12px 0;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+    }
+
+    .edit-form input[type="text"]:focus,
+    .edit-form input[type="file"]:focus {
+        border-color: #007bff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>Profile Details</h2>
+
+    <div class="profile-im">
+        <img src="/media/{{ user.email }}" alt="profile" class="profile-photo" />
+    </div>
+    <div class="profile-info">
+        <p><strong>User ID:</strong> {{ user.username }}</p>
+        <p><strong>Name:</strong> {{ user.first_name }}</p>
+    </div>
+
+    <button class="edit-button" onclick="toggleEditForm()">Edit Profile</button>
+
+    <div class="edit-form">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div>
+                <label for="first_name"> Name:</label>
+                <input type="text" name="first_name" value="{{ user.first_name }}">
+            </div>
+
+            <div>
+                <label for="photo">Profile Photo:</label>
+                <input type="file" name="photo">
+            </div>
+
+            <button type="submit" class="save-button">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleEditForm() {
+        const editForm = document.querySelector('.edit-form');
+        const profileInfo = document.querySelector('.profile-info');
+        const editButton = document.querySelector('.edit-button');
+
+        if (editForm.style.display === "none" || editForm.style.display === "") {
+            editForm.style.display = "block";
+            profileInfo.style.display = "none";
+            editButton.textContent = "Cancel Edit";
+        } else {
+            editForm.style.display = "none";
+            profileInfo.style.display = "block";
+            editButton.textContent = "Edit Profile";
+        }
+    }
+</script>
+{% endblock %}

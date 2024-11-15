@@ -1,0 +1,47 @@
+{% extends "../layoutCollege.html" %}
+
+{% load static %}
+
+{% block title %}Registration{% endblock %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/myevents.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="w-100 d-flex justify-content-between mt-3 ml-3">
+    <h4>Registration ({{ registration_user_pairs|length }})</h4>
+</div>
+<div>
+    <div class="register-list-events">
+        {% for registration, user in registration_user_pairs %}
+        <div class="register-event mb-3 mt-1" style="width: 510px;">
+            <div class="register-event-box" style="width: 500px;">
+                <div class="winner-event-img d-flex" style="height: 130px;width: 490px;">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 100px;width: 110px;">
+                        <img src="/media/{{user.email}}" alt="profile" style="height: 105px;width: 110px;"/>
+                    </div>
+                    <div class="mt-4 ms-5" style="padding-left: 10px;">
+                        <h6 style="color: #3c2557;">Event Name: {{ registration.event.name }}</h6>
+                        <h6>Username: {{ user.username }}</h6>
+                        <h6>Name: {{ user.first_name }}</h6>
+                        
+                    </div>
+                </div>
+                <div class="home-event-title">
+                    {% if registration.participation %}
+                    <h6 class="font">Status: Participated</h6>
+                    {% else %}
+                    <h6 class="font">Status: Registered</h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No registrations found.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

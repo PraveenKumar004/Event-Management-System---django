@@ -1,0 +1,118 @@
+{% extends "../layoutCollege.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .dashboard-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 20px;
+        background-color: #f0f0f0;
+    }
+
+    .card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 30%;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card h2 {
+        font-size: 36px;
+        margin: 10px 0;
+        color: #4a4a4a;
+    }
+
+    .card p {
+        font-size: 18px;
+        margin: 0;
+        color: #757575;
+    }
+
+    .icon {
+        font-size: 50px;
+        margin-bottom: 10px;
+        color: #3f51b5;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="card">
+        <i class="fas fa-calendar icon"></i>
+        <h2>{{ total_events }}</h2>
+        <p>Total Events</p>
+    </div>
+
+    <div class="card">
+        <i class="fas fa-users icon"></i>
+        <h2>{{ total_registrations }}</h2>
+        <p>Total Registrations</p>
+    </div>
+
+    <div class="card">
+        <i class="fas fa-chart-line icon"></i>
+        <h2>₹ {{ collection }}</h2>
+        <p>Total Balance</p>
+    </div>
+</div>
+<div class="dashboard-container mt-4">
+    <div class="home-event mb-3 mt-1" style="width: 405px;">
+        <div class="w-100 d-flex">
+            <h4>Upcoming Event</h4>
+        </div>
+        <div class="home-event-box pb-3" style="width: 400px;">
+            <div class="home-event-img" style="height: 200px;">
+                <img class="img-class" src="{{ upevent.poster.url }}" alt="{{ event.name }} Poster" />
+            </div>
+            <div class="home-event-title">
+                <h4 class="font head-hover" onclick="window.location.href='/dashboard/events/{{ upevent.id }}'"
+                    style="cursor: pointer;">
+                    {{ upevent.name }}
+                </h4>
+                <h5 class="font head-hover">
+                    Registrations : {{ upeventcount }}
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-event mb-3 mt-1" style="width: 405px;">
+        <div class="w-100 d-flex">
+            <h4>Annonce Winner</h4>
+        </div>
+        <div class="home-event-box" style="width: 400px;">
+            <div class="home-event-img" style="height: 200px;">
+                <img class="img-class" src="{{ anevent.poster.url }}" alt="{{ event.name }} Poster" />
+            </div>
+            <div class="home-event-title">
+                <h4 class="font head-hover" onclick="window.location.href='/event/{{ event.id }}/'"
+                    style="cursor: pointer;">
+                    {{ anevent.name }}
+                </h4>
+                <button class="button-event mt-2">Announce</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-event mb-3 mt-1" style="width: 405px;">
+        <div class="w-100 d-flex">
+            <h4>Latest Registrations</h4>
+        </div>
+        <div class="home-event-box" style="width: 400px;">
+        </div>
+    </div>
+</div>
+{% endblock %}

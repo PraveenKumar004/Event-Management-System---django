@@ -16,11 +16,22 @@
                 <img class="img-class" src="{{ event.poster.url }}" alt="{{ event.name }} Poster" />
             </div>
             <div class="home-event-title">
-                <h4 class="font head-hover" onclick="window.location.href='/event/{{ event.id }}/'" style="cursor: pointer;">
+                <h4 class="font head-hover" onclick="window.location.href='/event/{{ event.id }}/'"
+                    style="cursor: pointer;">
                     {{ event.name }}
                 </h4>
                 <div>
-                    <button class="button-event" onclick="window.location.href='/event/register/{{ event.id }}/'">Register</button>
+                    {% if event.total_tickets > 0 %}
+                    <button class="button-event" onclick="window.location.href='/event/register/{{ event.id }}/'">
+                        {% if event.paid %}
+                        ₹ {{ event.amount }}
+                        {% else %}
+                            Free
+                        {% endif %}
+                    </button>
+                    {% else %}
+                    <h5 class="house-full-message text-danger">House Full</h5>
+                    {% endif %}
                 </div>
             </div>
             <div class="home-event-title mt-0">
